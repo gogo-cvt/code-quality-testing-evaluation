@@ -3,6 +3,7 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import reactPlugin from 'eslint-plugin-react';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
 import { version } from 'react';
 
 export default defineConfig([
@@ -25,6 +26,15 @@ export default defineConfig([
       react: {
         version: 'detect'
       }
+    }
+  },
+  {
+    files: ['**/*.{js, jsx, mjs, cjs, ts, tsx}'],
+    plugins: {
+      'react-hooks': pluginReactHooks
+    },
+    rules: {
+      ...pluginReactHooks.configs.recommended.rules
     }
   },
   eslintPluginPrettierRecommended,
