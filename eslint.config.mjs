@@ -1,4 +1,5 @@
 import pluginJs from '@eslint/js';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
 import perfectionist from 'eslint-plugin-perfectionist';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import pluginReact from 'eslint-plugin-react';
@@ -7,42 +8,45 @@ import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 
 export default defineConfig([
-  // Node envrionment
+  // Node environment
   { languageOptions: { globals: { ...globals.node } } },
 
   // Recommended JS rules
   pluginJs.configs.recommended,
 
-  // Perfectionist configuration
+  // Perfectionist
   perfectionist.configs['recommended-natural'],
 
-  // React configuration
+  // Frontend Configuration
   {
-    files: ['**/*.{js, jsx, mjs, cjs, ts, tsx'],
+    files: ['packages/frontend/src/**/*.{js,jsx,ts,tsx}'],
     ...pluginReact.configs.flat.recommended,
     languageOptions: {
       ...pluginReact.configs.flat.recommended.languageOptions,
       globals: {
         ...globals.browser
+      },
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true
+        }
       }
+    },
+    plugins: {
+      ...pluginReact.configs.flat.recommended.plugins,
+      'jsx-a11y': jsxA11y,
+      'react-hooks': pluginReactHooks
     },
     rules: {
       ...pluginReact.configs.flat.recommended.rules,
+      ...pluginReactHooks.configs.recommended.rules,
+      ...jsxA11y.flatConfigs.recommended.rules,
       'react/react-in-jsx-scope': 'off'
     },
     settings: {
       react: {
-        version: 'detect'
+        version: '18.2'
       }
-    }
-  },
-  {
-    files: ['**/*.{js, jsx, mjs, cjs, ts, tsx}'],
-    plugins: {
-      'react-hooks': pluginReactHooks
-    },
-    rules: {
-      ...pluginReactHooks.configs.recommended.rules
     }
   },
 
