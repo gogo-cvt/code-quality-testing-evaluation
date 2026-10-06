@@ -4,6 +4,7 @@ import perfectionist from 'eslint-plugin-perfectionist';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import pluginReact from 'eslint-plugin-react';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
+import pluginNode from 'eslint-plugin-n';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 
@@ -16,6 +17,18 @@ export default defineConfig([
 
   // Perfectionist
   perfectionist.configs['recommended-natural'],
+
+  // Backend configuration
+  {
+    files: ['packages/backend/src/**/*.{js, mjs, cjs}'],
+    ...pluginNode.configs['flat/recommended-script'],
+    rules: {
+      ...pluginNode.configs['flat/recommended-script'].rules,
+      'no-unused-vars': ['error', {argsIgnorePattern: '^(next|req|res|_)'}],
+      'n/no-processes-exit': 'off',
+      'n/no-unpublished-import': 'off'
+    }
+  },
 
   // Frontend Configuration
   {
