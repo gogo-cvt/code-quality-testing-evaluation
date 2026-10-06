@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+
 const initDatabase = require('./migrations/init');
 
 let db = null;
@@ -76,7 +77,7 @@ const closeConnection = () => {
 };
 
 module.exports = {
+  closeConnection,
   connect,
-  getDb,
-  closeConnection
+  getDb
 };

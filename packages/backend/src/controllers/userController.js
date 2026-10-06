@@ -1,9 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
 const db = require('../db/database');
 
 exports.registerUser = (req, res) => {
-  const { username, password, firstname, lastname } = req.body;
+  const { firstname, lastname, password, username } = req.body;
 
   const hashedPassword = bcrypt.hashSync(password, 8);
 
@@ -28,7 +29,7 @@ exports.registerUser = (req, res) => {
 };
 
 exports.loginUser = (req, res) => {
-  const { username, password } = req.body;
+  const { password, username } = req.body;
 
   const database = db.getDb();
 
@@ -45,10 +46,10 @@ exports.loginUser = (req, res) => {
       auth: true,
       token,
       user: {
-        id: user.id,
-        username: user.username,
         firstname: user.firstname,
-        lastname: user.lastname
+        id: user.id,
+        lastname: user.lastname,
+        username: user.username
       }
     });
   });
@@ -99,7 +100,7 @@ exports.findSimilarUsernames = (req, res) => {
 
         const distance = matrix[username1.length][username2.length];
         if (distance <= 2) {
-          similar.push({ user1: users[i].username, user2: users[j].username, distance });
+          similar.push({ distance, user1: users[i].username, user2: users[j].username });
         }
       }
     }

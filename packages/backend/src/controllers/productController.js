@@ -36,8 +36,8 @@ exports.getAllProducts = (req, res) => {
     }
 
     res.json({
-      message: 'success',
-      data: productsWithDetails
+      data: productsWithDetails,
+      message: 'success'
     });
   });
 };
@@ -70,8 +70,8 @@ exports.getProduct = (req, res) => {
       return;
     }
     res.json({
-      message: 'success',
-      data: result
+      data: result,
+      message: 'success'
     });
   });
 };
